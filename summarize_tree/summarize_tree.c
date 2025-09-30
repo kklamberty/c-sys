@@ -17,7 +17,7 @@ bool is_dir(const char* path) {
    * the file doesn't actually exist.
    */
 
-   struct stat buffer;
+    struct stat buffer;
     if (stat(path, &buffer) != 0) {
         perror("stat failed");
         exit(EXIT_FAILURE);
