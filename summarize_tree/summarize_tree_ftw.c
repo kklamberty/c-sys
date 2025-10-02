@@ -17,16 +17,19 @@ static int callback(const char *fpath, const struct stat *sb, int typeflag) {
 #define MAX_FTW_DEPTH 16
 
 int main(int argc, char** argv) {
-        if (argc != 2) {
-                printf(stderr, "Usage: %s <path>\n", argv[0]);
-                printf("Where <path> is the path to the directory to be summarized.\n");
-                return 1;
-        }
+  if (argc != 2) {
+    printf("Usage: %s <path>\n", argv[0]);
+    printf("Where <path> is the path to the directory to be summarized.\n");
+    return 1;
+  }
 
-        ftw(argv[1], callback, MAX_FTW_DEPTH);
+  num_dirs = 0;
+  num_regular = 0;
 
-        printf("There were %d directories.\n", num_dirs);
-        printf("There were %d regular files.\n", num_regular);
+  ftw(argv[1], callback, MAX_FTW_DEPTH);
 
-        return 0;
+  printf("There were %d directories.\n", num_dirs);
+  printf("There were %d regular files.\n", num_regular);
+
+  return 0;
 }
