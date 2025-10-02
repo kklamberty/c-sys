@@ -45,6 +45,37 @@ void process_directory(const char* path) {
    * with a matching call to chdir() to move back out of it when you're
    * done.
    */
+  
+  // as long as the path isn't . or .., change into it and count it
+  if (!(strcmp(path, ".") == 0 || strcmp(path, "..") == 0)) {
+    chdir(path);
+    num_dirs++;
+  }
+
+  // open the current directory
+  DIR* dir = opendir(".");
+  // if that failed, print an error and exit
+  if (dir == NULL) {
+    perror("opendir failed");
+    exit(EXIT_FAILURE);
+  }
+
+  // loop through the entries in the directory, processing each one
+  // that isn't . or ..
+  struct dirent* entry;
+  while ((entry = readdir(dir)) != NULL) {
+    if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+      process_path(entry->d_name);
+    }
+  }
+
+  // close the directory
+  closedir(dir);
+
+  // if we changed into the directory, change back out
+  if (!(strcmp(path, ".") == 0 || strcmp(path, "..") == 0)) {
+    chdir("..");
+  }
 }
 
 void process_file(const char* path) {
