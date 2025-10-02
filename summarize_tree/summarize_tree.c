@@ -18,10 +18,12 @@ bool is_dir(const char* path) {
    */
 
     struct stat buffer;
+    // call stat on the path, if it fails print an error and exit
     if (stat(path, &buffer) != 0) {
         perror("stat failed");
         exit(EXIT_FAILURE);
     }
+    // return true if it's a directory, false otherwise
     return S_ISDIR(buffer.st_mode);
 }
 
